@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getLaw } from "@/data/laws";
+import { getLaw, type Law } from "@/data/laws";
 import { GlassCard } from "@/components/site/GlassCard";
 import { Formula } from "@/components/site/Formula";
 import { ArrowLeft, FlaskConical } from "lucide-react";
@@ -72,7 +72,7 @@ function LawDetail() {
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">O'zgaruvchilar</h2>
           <table className="w-full text-sm">
             <tbody>
-              {law.variables.map((v) => (
+              {law.variables.map((v: Law["variables"][number]) => (
                 <tr key={v.symbol} className="border-b border-white/5 last:border-0">
                   <td className="py-2 pr-3 align-top">
                     <Formula tex={v.symbol} inline />
