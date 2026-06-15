@@ -4,7 +4,7 @@ import { GlassCard } from "@/components/site/GlassCard";
 import { Formula } from "@/components/site/Formula";
 import { ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/lab")({
+export const Route = createFileRoute("/lab/")({
   head: () => ({
     meta: [
       { title: "Interaktiv laboratoriya — PhysicsLab" },

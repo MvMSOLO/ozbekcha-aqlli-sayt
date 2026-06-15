@@ -5,7 +5,7 @@ import { GlassCard } from "@/components/site/GlassCard";
 import { Formula } from "@/components/site/Formula";
 import { ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/laws")({
+export const Route = createFileRoute("/laws/")({
   head: () => ({
     meta: [
       { title: "Qonunlar kutubxonasi — PhysicsLab" },
