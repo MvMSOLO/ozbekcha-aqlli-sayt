@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LawsIndexRouteImport } from './routes/laws.index'
+import { Route as LabIndexRouteImport } from './routes/lab.index'
+import { Route as LawsSlugRouteImport } from './routes/laws.$slug'
+import { Route as LabSlugRouteImport } from './routes/lab.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LawsIndexRoute = LawsIndexRouteImport.update({
+  id: '/laws/',
+  path: '/laws/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabIndexRoute = LabIndexRouteImport.update({
+  id: '/lab/',
+  path: '/lab/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LawsSlugRoute = LawsSlugRouteImport.update({
+  id: '/laws/$slug',
+  path: '/laws/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabSlugRoute = LabSlugRouteImport.update({
+  id: '/lab/$slug',
+  path: '/lab/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/lab/$slug': typeof LabSlugRoute
+  '/laws/$slug': typeof LawsSlugRoute
+  '/lab/': typeof LabIndexRoute
+  '/laws/': typeof LawsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/lab/$slug': typeof LabSlugRoute
+  '/laws/$slug': typeof LawsSlugRoute
+  '/lab': typeof LabIndexRoute
+  '/laws': typeof LawsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/lab/$slug': typeof LabSlugRoute
+  '/laws/$slug': typeof LawsSlugRoute
+  '/lab/': typeof LabIndexRoute
+  '/laws/': typeof LawsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/lab/$slug' | '/laws/$slug' | '/lab/' | '/laws/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/lab/$slug' | '/laws/$slug' | '/lab' | '/laws'
+  id: '__root__' | '/' | '/lab/$slug' | '/laws/$slug' | '/lab/' | '/laws/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LabSlugRoute: typeof LabSlugRoute
+  LawsSlugRoute: typeof LawsSlugRoute
+  LabIndexRoute: typeof LabIndexRoute
+  LawsIndexRoute: typeof LawsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +88,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/laws/': {
+      id: '/laws/'
+      path: '/laws'
+      fullPath: '/laws/'
+      preLoaderRoute: typeof LawsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/': {
+      id: '/lab/'
+      path: '/lab'
+      fullPath: '/lab/'
+      preLoaderRoute: typeof LabIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/laws/$slug': {
+      id: '/laws/$slug'
+      path: '/laws/$slug'
+      fullPath: '/laws/$slug'
+      preLoaderRoute: typeof LawsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/$slug': {
+      id: '/lab/$slug'
+      path: '/lab/$slug'
+      fullPath: '/lab/$slug'
+      preLoaderRoute: typeof LabSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LabSlugRoute: LabSlugRoute,
+  LawsSlugRoute: LawsSlugRoute,
+  LabIndexRoute: LabIndexRoute,
+  LawsIndexRoute: LawsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
