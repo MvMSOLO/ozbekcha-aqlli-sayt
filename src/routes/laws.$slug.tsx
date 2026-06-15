@@ -8,7 +8,7 @@ export const Route = createFileRoute("/laws/$slug")({
   loader: ({ params }) => {
     const law = getLaw(params.slug);
     if (!law) throw notFound();
-    return { law };
+    return { law: law! };
   },
   head: ({ loaderData }) => {
     const law = loaderData?.law;
