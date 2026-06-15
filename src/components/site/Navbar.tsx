@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Atom } from "lucide-react";
 
-const items = [
+const items: { to: "/" | "/laws" | "/lab"; label: string; exact?: boolean }[] = [
   { to: "/", label: "Bosh sahifa", exact: true },
   { to: "/laws", label: "Qonunlar" },
   { to: "/lab", label: "Laboratoriya" },
-] as const;
+];
 
 export function Navbar() {
   return (
