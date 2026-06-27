@@ -1,6 +1,24 @@
 modules = ["nodejs-20", "web"]
+
 [agent]
 expertMode = true
 
 [nix]
 channel = "stable-25_05"
+
+[workflows]
+runButton = "PhysicsLab v2"
+
+[[workflows.workflow]]
+name = "PhysicsLab v2"
+author = "agent"
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd physicslab && npm run dev"
+waitForPort = 8080
+
+[[ports]]
+localPort = 8080
+externalPort = 80
