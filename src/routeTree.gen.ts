@@ -9,12 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FormulasRouteImport } from './routes/formulas'
+import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LawsIndexRouteImport } from './routes/laws.index'
 import { Route as LabIndexRouteImport } from './routes/lab.index'
 import { Route as LawsSlugRouteImport } from './routes/laws.$slug'
 import { Route as LabSlugRouteImport } from './routes/lab.$slug'
 
+const FormulasRoute = FormulasRouteImport.update({
+  id: '/formulas',
+  path: '/formulas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +55,8 @@ const LabSlugRoute = LabSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/favorites': typeof FavoritesRoute
+  '/formulas': typeof FormulasRoute
   '/lab/$slug': typeof LabSlugRoute
   '/laws/$slug': typeof LawsSlugRoute
   '/lab/': typeof LabIndexRoute
@@ -50,6 +64,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/favorites': typeof FavoritesRoute
+  '/formulas': typeof FormulasRoute
   '/lab/$slug': typeof LabSlugRoute
   '/laws/$slug': typeof LawsSlugRoute
   '/lab': typeof LabIndexRoute
@@ -58,6 +74,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/favorites': typeof FavoritesRoute
+  '/formulas': typeof FormulasRoute
   '/lab/$slug': typeof LabSlugRoute
   '/laws/$slug': typeof LawsSlugRoute
   '/lab/': typeof LabIndexRoute
@@ -65,14 +83,38 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lab/$slug' | '/laws/$slug' | '/lab/' | '/laws/'
+  fullPaths:
+    | '/'
+    | '/favorites'
+    | '/formulas'
+    | '/lab/$slug'
+    | '/laws/$slug'
+    | '/lab/'
+    | '/laws/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lab/$slug' | '/laws/$slug' | '/lab' | '/laws'
-  id: '__root__' | '/' | '/lab/$slug' | '/laws/$slug' | '/lab/' | '/laws/'
+  to:
+    | '/'
+    | '/favorites'
+    | '/formulas'
+    | '/lab/$slug'
+    | '/laws/$slug'
+    | '/lab'
+    | '/laws'
+  id:
+    | '__root__'
+    | '/'
+    | '/favorites'
+    | '/formulas'
+    | '/lab/$slug'
+    | '/laws/$slug'
+    | '/lab/'
+    | '/laws/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FavoritesRoute: typeof FavoritesRoute
+  FormulasRoute: typeof FormulasRoute
   LabSlugRoute: typeof LabSlugRoute
   LawsSlugRoute: typeof LawsSlugRoute
   LabIndexRoute: typeof LabIndexRoute
@@ -81,6 +123,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/formulas': {
+      id: '/formulas'
+      path: '/formulas'
+      fullPath: '/formulas'
+      preLoaderRoute: typeof FormulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,6 +177,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FavoritesRoute: FavoritesRoute,
+  FormulasRoute: FormulasRoute,
   LabSlugRoute: LabSlugRoute,
   LawsSlugRoute: LawsSlugRoute,
   LabIndexRoute: LabIndexRoute,
