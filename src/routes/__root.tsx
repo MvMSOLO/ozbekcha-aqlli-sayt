@@ -7,12 +7,15 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "../components/site/Navbar";
 import { Footer } from "../components/site/Footer";
+import { MobileTabBar } from "../components/site/MobileTabBar";
+import { CommandPalette } from "../components/site/CommandPalette";
+import { SettingsDrawer } from "../components/site/SettingsDrawer";
 
 function NotFoundComponent() {
   return (
@@ -123,14 +126,19 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
-        <Navbar />
-        <main className="flex-1">
+        <Navbar onOpenSearch={() => setSearchOpen(true)} onOpenSettings={() => setSettingsOpen(true)} />
+        <main className="flex-1 pb-16 md:pb-0">
           <Outlet />
         </main>
         <Footer />
+        <MobileTabBar />
+        <CommandPalette open={searchOpen} onOpenChange={setSearchOpen} onOpenSettings={() => setSettingsOpen(true)} />
+        <SettingsDrawer open={settingsOpen} onOpenChange={setSettingsOpen} />
       </div>
     </QueryClientProvider>
   );
