@@ -1,22 +1,15 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 
-export function GlassCard({
-  children,
-  className,
-  glow = false,
-}: {
-  children: ReactNode;
-  className?: string;
+interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
   glow?: boolean;
-}) {
+}
+
+export function GlassCard({ children, className, glow = false, ...rest }: GlassCardProps) {
   return (
     <div
-      className={cn(
-        "glass rounded-2xl",
-        glow && "shadow-[var(--shadow-glow)]",
-        className,
-      )}
+      {...rest}
+      className={cn("glass rounded-2xl", glow && "shadow-[var(--shadow-glow)]", className)}
     >
       {children}
     </div>
