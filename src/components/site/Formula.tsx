@@ -1,10 +1,20 @@
-import { BlockMath, InlineMath } from "react-katex";
+import katex from "katex";
+import { useMemo } from "react";
 
 export function Formula({ tex, inline = false }: { tex: string; inline?: boolean }) {
-  if (inline) return <InlineMath math={tex} />;
+  const html = useMemo(
+    () =>
+      katex.renderToString(tex, {
+        throwOnError: false,
+        displayMode: !inline,
+        output: "html",
+      }),
+    [tex, inline],
+  );
+  if (inline) return <span className="katex-inline" dangerouslySetInnerHTML={{ __html: html }} />;
   return (
     <div className="overflow-x-auto py-2">
-      <BlockMath math={tex} />
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }
