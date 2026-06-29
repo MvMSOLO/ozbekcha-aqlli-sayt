@@ -15,6 +15,7 @@ import { Navbar } from "../components/site/Navbar";
 import { Footer } from "../components/site/Footer";
 import { MobileTabBar } from "../components/site/MobileTabBar";
 import { CommandPalette } from "../components/site/CommandPalette";
+import { registerPWA } from "../lib/pwa/register";
 import { SettingsDrawer } from "../components/site/SettingsDrawer";
 
 function NotFoundComponent() {
