@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Beaker, FlaskConical, Sigma } from "lucide-react";
+import { Home, Beaker, FlaskConical, Sigma, BookOpen } from "lucide-react";
 
 const items = [
   { to: "/" as const, label: "Bosh", icon: Home, exact: true },
-  { to: "/laws" as const, label: "Qonunlar", icon: Beaker },
+  { to: "/laws" as const, label: "Qonun", icon: Beaker },
   { to: "/lab" as const, label: "Lab", icon: FlaskConical },
   { to: "/formulas" as const, label: "Formula", icon: Sigma },
+  { to: "/kitob" as const, label: "Kitob", icon: BookOpen },
 ];
 
 export function MobileTabBar() {

@@ -4,11 +4,29 @@ import { getLab } from "@/data/labs";
 import { Formula } from "@/components/site/Formula";
 import { ArrowLeft } from "lucide-react";
 
-const ProjectileLab = lazy(() => import("@/components/labs/ProjectileLab").then((m) => ({ default: m.ProjectileLab })));
-const PendulumLab = lazy(() => import("@/components/labs/PendulumLab").then((m) => ({ default: m.PendulumLab })));
-const WaveLab = lazy(() => import("@/components/labs/WaveLab").then((m) => ({ default: m.WaveLab })));
-const SpringLab = lazy(() => import("@/components/labs/SpringLab").then((m) => ({ default: m.SpringLab })));
-const OhmLab = lazy(() => import("@/components/labs/OhmLab").then((m) => ({ default: m.OhmLab })));
+const Labs = {
+  snaryad: lazy(() => import("@/components/labs/ProjectileLab").then((m) => ({ default: m.ProjectileLab }))),
+  mayatnik: lazy(() => import("@/components/labs/PendulumLab").then((m) => ({ default: m.PendulumLab }))),
+  tolqin: lazy(() => import("@/components/labs/WaveLab").then((m) => ({ default: m.WaveLab }))),
+  prujina: lazy(() => import("@/components/labs/SpringLab").then((m) => ({ default: m.SpringLab }))),
+  om: lazy(() => import("@/components/labs/OhmLab").then((m) => ({ default: m.OhmLab }))),
+  "erkin-tushish": lazy(() => import("@/components/labs/FreeFallLab").then((m) => ({ default: m.FreeFallLab }))),
+  aylanma: lazy(() => import("@/components/labs/CircularLab").then((m) => ({ default: m.CircularLab }))),
+  garmonik: lazy(() => import("@/components/labs/HarmonicLab").then((m) => ({ default: m.HarmonicLab }))),
+  "ideal-gaz": lazy(() => import("@/components/labs/IdealGasLab").then((m) => ({ default: m.IdealGasLab }))),
+  karno: lazy(() => import("@/components/labs/CarnotLab").then((m) => ({ default: m.CarnotLab }))),
+  kulon: lazy(() => import("@/components/labs/CoulombLab").then((m) => ({ default: m.CoulombLab }))),
+  "elektr-maydon": lazy(() => import("@/components/labs/ElectricFieldLab").then((m) => ({ default: m.ElectricFieldLab }))),
+  "magnit-maydon": lazy(() => import("@/components/labs/MagneticFieldLab").then((m) => ({ default: m.MagneticFieldLab }))),
+  kondensator: lazy(() => import("@/components/labs/CapacitorLab").then((m) => ({ default: m.CapacitorLab }))),
+  snell: lazy(() => import("@/components/labs/SnellLab").then((m) => ({ default: m.SnellLab }))),
+  linza: lazy(() => import("@/components/labs/LensLab").then((m) => ({ default: m.LensLab }))),
+  yung: lazy(() => import("@/components/labs/YoungLab").then((m) => ({ default: m.YoungLab }))),
+  doppler: lazy(() => import("@/components/labs/DopplerLab").then((m) => ({ default: m.DopplerLab }))),
+  radioaktiv: lazy(() => import("@/components/labs/RadioactiveLab").then((m) => ({ default: m.RadioactiveLab }))),
+  "foto-effekt": lazy(() => import("@/components/labs/PhotoelectricLab").then((m) => ({ default: m.PhotoelectricLab }))),
+  lorentz: lazy(() => import("@/components/labs/LorentzLab").then((m) => ({ default: m.LorentzLab }))),
+} as const;
 
 export const Route = createFileRoute("/lab/$slug")({
   loader: ({ params }) => {
@@ -48,7 +66,7 @@ export const Route = createFileRoute("/lab/$slug")({
 
 function LabPage() {
   const { lab } = Route.useLoaderData();
-  const Component = pick(lab.slug);
+  const Component = (Labs as Record<string, React.LazyExoticComponent<React.ComponentType>>)[lab.slug] ?? Labs.snaryad;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -73,15 +91,4 @@ function LabPage() {
       </div>
     </div>
   );
-}
-
-function pick(slug: string) {
-  switch (slug) {
-    case "snaryad": return ProjectileLab;
-    case "mayatnik": return PendulumLab;
-    case "tolqin": return WaveLab;
-    case "prujina": return SpringLab;
-    case "om": return OhmLab;
-    default: return ProjectileLab;
-  }
 }

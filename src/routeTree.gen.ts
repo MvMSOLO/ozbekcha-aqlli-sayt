@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as KitobRouteImport } from './routes/kitob'
 import { Route as FormulasRouteImport } from './routes/formulas'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as LabIndexRouteImport } from './routes/lab.index'
 import { Route as LawsSlugRouteImport } from './routes/laws.$slug'
 import { Route as LabSlugRouteImport } from './routes/lab.$slug'
 
+const KitobRoute = KitobRouteImport.update({
+  id: '/kitob',
+  path: '/kitob',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FormulasRoute = FormulasRouteImport.update({
   id: '/formulas',
   path: '/formulas',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
   '/formulas': typeof FormulasRoute
+  '/kitob': typeof KitobRoute
   '/lab/$slug': typeof LabSlugRoute
   '/laws/$slug': typeof LawsSlugRoute
   '/lab/': typeof LabIndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
   '/formulas': typeof FormulasRoute
+  '/kitob': typeof KitobRoute
   '/lab/$slug': typeof LabSlugRoute
   '/laws/$slug': typeof LawsSlugRoute
   '/lab': typeof LabIndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
   '/formulas': typeof FormulasRoute
+  '/kitob': typeof KitobRoute
   '/lab/$slug': typeof LabSlugRoute
   '/laws/$slug': typeof LawsSlugRoute
   '/lab/': typeof LabIndexRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/favorites'
     | '/formulas'
+    | '/kitob'
     | '/lab/$slug'
     | '/laws/$slug'
     | '/lab/'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/favorites'
     | '/formulas'
+    | '/kitob'
     | '/lab/$slug'
     | '/laws/$slug'
     | '/lab'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/favorites'
     | '/formulas'
+    | '/kitob'
     | '/lab/$slug'
     | '/laws/$slug'
     | '/lab/'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FavoritesRoute: typeof FavoritesRoute
   FormulasRoute: typeof FormulasRoute
+  KitobRoute: typeof KitobRoute
   LabSlugRoute: typeof LabSlugRoute
   LawsSlugRoute: typeof LawsSlugRoute
   LabIndexRoute: typeof LabIndexRoute
@@ -123,6 +136,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/kitob': {
+      id: '/kitob'
+      path: '/kitob'
+      fullPath: '/kitob'
+      preLoaderRoute: typeof KitobRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/formulas': {
       id: '/formulas'
       path: '/formulas'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FavoritesRoute: FavoritesRoute,
   FormulasRoute: FormulasRoute,
+  KitobRoute: KitobRoute,
   LabSlugRoute: LabSlugRoute,
   LawsSlugRoute: LawsSlugRoute,
   LabIndexRoute: LabIndexRoute,
@@ -187,13 +208,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

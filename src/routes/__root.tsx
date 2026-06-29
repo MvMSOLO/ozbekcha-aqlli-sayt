@@ -15,6 +15,7 @@ import { Navbar } from "../components/site/Navbar";
 import { Footer } from "../components/site/Footer";
 import { MobileTabBar } from "../components/site/MobileTabBar";
 import { CommandPalette } from "../components/site/CommandPalette";
+import { registerPWA } from "../lib/pwa/register";
 import { SettingsDrawer } from "../components/site/SettingsDrawer";
 
 function NotFoundComponent() {
@@ -93,9 +94,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Fizika qonunlarini chiroyli formulalar va jonli simulyatsiyalar bilan o'zbek tilida o'rganing." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/93cd3ae8-2548-4cb1-96aa-fe13c8a93546/id-preview-0df640ff--d1f86a40-d1a2-443c-9b47-72de118973aa.lovable.app-1781498907439.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/93cd3ae8-2548-4cb1-96aa-fe13c8a93546/id-preview-0df640ff--d1f86a40-d1a2-443c-9b47-72de118973aa.lovable.app-1781498907439.png" },
+      { name: "theme-color", content: "#6366f1" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "PhysicsLab" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icons/icon-192.png" },
+      { rel: "icon", type: "image/png", sizes: "512x512", href: "/icons/icon-512.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -128,6 +137,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [searchOpen, setSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  useEffect(() => { registerPWA(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
