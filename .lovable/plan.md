@@ -1,55 +1,50 @@
-PDF'lardagi 6 ta task juda katta hajm (PWA + 10 yangi lab + 150+ formula + UX + ideal lab UI + PDF reader). Bularni bitta turn'da sifatli qilish imkonsiz, shuning uchun fazalarga bo'lib bajaramiz. Har bir faza alohida ishonchli, build-verified bo'ladi.
+Bugun bitta katta turn'da quyidagilarni bajaramiz. Hajm katta — soddalashtirilgan, lekin ishlaydigan implementatsiya bilan boramiz.
 
-## Faza 1 — Asos: Formulalar bazasi + UX (HOZIR)
-Bu hozirgi sayt uchun eng katta qiymat beradi.
+## 1. PWA + Install (Task 1)
+- `public/manifest.webmanifest` — `PhysicsLab`, dark theme (#0a0a0f / #6366f1), `display: standalone`, shortcuts (Qonunlar, Lab, Formulalar)
+- Ikonlar: `imagegen` bilan 192/512 maskable PNG + apple-touch-icon
+- `vite-plugin-pwa` (`generateSW`, `autoUpdate`, NetworkFirst HTML, CacheFirst assets)
+- Registratsiya wrapper (`src/lib/pwa/register.ts`) — Lovable preview/iframe/dev'da register qilmaydi, `?sw=off` kill-switch
+- `<InstallButton />` — `beforeinstallprompt` ushlaydi, navbarda ko'rinadi
+- iOS meta teglari (`apple-mobile-web-app-capable`, status bar style, theme-color)
 
-**1.1 To'liq formulalar bazasi (`/formulas`)**
-- `src/data/formulas.ts` — 12 bo'lim, 150+ formula (PDF'dagi barcha): Kinematika, Dinamika, Saqlanish qonunlari, Statika/Gidrodinamika, Tebranishlar, Termodinamika, Elektrostatika, O'zgarmas tok, Elektromagnit induksiya, Optika, Atom/yadro, SNN
-- Har bir formula: KaTeX, tavsif (uz), belgilar (uz, birlik), kategoriya
-- `/formulas` sahifa: kategoriya filtri, qidiruv (nom + formula matn), nusxa olish tugmasi, sevimlilar (localStorage)
-- Har bir formula card ochilganda kengaytirilgan tushuncha (belgilar jadvali, misol)
+## 2. Yangi laboratoriyalar — jami 20+ (Task 2 + 4)
+Hozir 5 ta. +16 ta qo'shamiz = **21 ta lab**:
+1. Snaryad (bor) 2. Mayatnik (bor) 3. To'lqin (bor) 4. Prujina (bor) 5. Om zanjiri (bor)
+6. **Erkin tushish** 7. **Aylanma harakat** 8. **Garmonik tebranish (grafik)** 9. **Ideal gaz (PV)** 10. **Karno sikli**
+11. **Kulon kuchi** 12. **Elektr maydon chiziqlari** 13. **Magnit maydon (tok atrofida)** 14. **Kondensator zaryadlanishi**
+15. **Snell sinishi** 16. **Yupqa linza** 17. **Yorug'lik interferensiyasi (Yung)** 18. **Doppler effekti**
+19. **Radioaktiv parchalanish** 20. **Foto-effekt** 21. **Nisbiylik (Lorentz)**
 
-**1.2 Easy-to-use UX qatlamasi**
-- Global qidiruv (Ctrl+K / `Cmd+K`) — qonun, lab, formula bo'yicha (`cmdk` ishlatib shadcn `command` komponenti)
-- Sevimlilar tizimi (`useFavorites` hook, localStorage) — qonun/formula/lab
-- `/favorites` sahifa
-- Mobil pastki navigatsiya (Bosh / Qonunlar / Lab / Formulalar)
-- Sozlamalar drawer: animatsiyalarni o'chirish (reduced-motion), shrift o'lchami (sm/md/lg)
-- Accessibility: ARIA labels, keyboard nav, focus rings, skip-link
+Har bir lab standart layout: chap controls (sliderlar), markaz Canvas 2D, o'ng natijalar paneli, pastda formula + "hozir nima sodir bo'lyapti" izoh. `LabShell` komponentini chiqaramiz — barcha labs shu shellda. Pragmatik bo'lib, ba'zi yangi labs soddaroq vizual bilan (lekin to'g'ri fizika hisob-kitobi bilan) keladi.
 
-## Faza 2 — PWA (keyingi turn)
-- `public/manifest.webmanifest` + icons (192/512 maskable, imagegen)
-- `vite-plugin-pwa` generateSW, NetworkFirst HTML, CacheFirst assets
-- Lovable preview guards (bizning skill rules)
-- O'rnatish tugmasi (`beforeinstallprompt`)
-- iOS meta teglari
+## 3. Formulalar va Qonunlar (Task 3)
+- `src/data/formulas.ts` hozir ~140 ta — to'liq tekshirib **160+** ga yetkazamiz (yetishmayotgan SNN, atom, magnit qismlari)
+- `src/data/laws.ts` hozir 11 ta → **22 ta** qonun (Arximed, Bernulli, Paskal, Faraday induksiya, Lenz, Lorentz kuchi, Joul-Lens, Boyl-Mariot to'ldirish, Sharl, Gey-Lyussak, Klapeyron, Plank kvant)
+- Yangi qonunlarning hammasi formula + tushuntirish + belgilar + real misol + image bilan
 
-## Faza 3 — Yangi laboratoriyalar (6 ta priority)
-Eng yuqori qiymat beruvchilar:
-- Garmonik tebranish (vaqt grafigi)
-- Ideal gaz (PV diagramma)
-- Elektr maydon (Coulomb, kuch chiziqlari)
-- Snell qonuni (sinish)
-- Linza optikasi
-- Doppler effekti
-Har biri yangi sxema: chap controls, markaz canvas, o'ng natijalar paneli, pastda nazariya tushunchasi.
+## 4. UX yaxshilash (Task 4)
+- Allaqachon bor: Ctrl+K search, favorites, mobile tabbar, settings drawer
+- Qo'shamiz: lab list'iga kategoriya filtri (Mexanika/Elektr/Optika/Atom/Termo), formula cards'ga JSON-LD, skip-link
 
-## Faza 4 — Qolgan labs + ideal lab UI redesign
-Magnit maydon, Yorug'lik interferensiyasi, Om zanjiri 2.0, Radioaktiv parchalanish.
-Barcha labslarga play/pause/reset, real vaqt natija paneli, formula display, "hozir nima sodir bo'lyapti" izoh.
+## 5. Standart Lab UI (Task 5)
+`src/components/labs/LabShell.tsx` — title, ko'rsatma, controls slot, canvas slot, results slot, formula slot, explanation slot. Barcha eski 5 ta lab ham shu shell'ga ko'chiriladi.
 
-## Faza 5 — PDF kitob reader (`/book`)
-`react-pdf` (pdf.js) bilan: drag&drop upload, page nav, zoom, mundarija, izlash, bookmark, page offset sozlash. Faqat brauzerda saqlanadi (IndexedDB), serverga jo'natilmaydi.
+## 6. PDF kitob reader (Task 6)
+- `/kitob` route — `react-pdf` (pdf.js)
+- Drag&drop yoki file picker (faqat brauzerda, serverga jo'natilmaydi)
+- Sahifa navigatsiyasi, zoom (+/−), aylantirish, sahifa raqami offset sozlamasi
+- Tanlangan PDF IndexedDB'da saqlanadi (idb-keyval), favoritga olish mumkin
+- Bookmark va oxirgi o'qigan sahifa eslab qolinadi
 
----
-
-## Texnik qarorlar
-- Hech qanday backend kerak emas — hammasi statik + localStorage/IndexedDB
+## Texnik
+- Yangi paketlar: `vite-plugin-pwa`, `workbox-window`, `react-pdf`, `pdfjs-dist`, `idb-keyval`
+- Code-splitting: barcha labs `.lazy.tsx` orqali
+- Build/typecheck verify
 - Dizayn: hozirgi dark glassmorphic saqlanadi
-- Yangi paketlar (faza bo'yicha): `cmdk` (faza 1), `vite-plugin-pwa` + `workbox-window` (faza 2), `react-pdf` (faza 5)
-- Build/typecheck har fazadan keyin verify qilinadi
+- Til: hammasi o'zbekcha
 
-## Hozirgi turn'da nima quriladi
-**FAQAT Faza 1**: formulalar bazasi to'liq, `/formulas` sahifa, global qidiruv (Ctrl+K), sevimlilar, mobil pastki nav, sozlamalar drawer. Bu o'zi katta hajm — sifatli qilish uchun bitta faza.
+## Ogohlantirish
+6 tasknii bitta turn'da 100% pollished qilish real emas — lekin har biri **ishlaydigan va sifatli** holatda yetkaziladi. Ba'zi yangi labs (Foto-effekt, Nisbiylik) vizual jihatdan minimal, ammo fizik hisob to'g'ri. Keyingi turn'larda har birini sayqallaymiz.
 
-Tasdiqlasangiz Faza 1'dan boshlayman. Keyingi fazalarni xohlagan tartibda qilamiz.
+Tasdiqlasangiz boshlayman.
