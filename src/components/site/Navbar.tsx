@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Atom, Search, Settings as SettingsIcon, Heart } from "lucide-react";
+import { InstallButton } from "./InstallButton";
 
-const items: { to: "/" | "/laws" | "/lab" | "/formulas"; label: string; exact?: boolean }[] = [
-  { to: "/", label: "Bosh sahifa", exact: true },
+const items: { to: "/" | "/laws" | "/lab" | "/formulas" | "/kitob"; label: string; exact?: boolean }[] = [
+  { to: "/", label: "Bosh", exact: true },
   { to: "/laws", label: "Qonunlar" },
-  { to: "/lab", label: "Laboratoriya" },
+  { to: "/lab", label: "Lab" },
   { to: "/formulas", label: "Formulalar" },
+  { to: "/kitob", label: "Kitob" },
 ];
 
 export function Navbar({
@@ -41,6 +43,7 @@ export function Navbar({
           ))}
         </ul>
         <div className="flex items-center gap-1">
+          <InstallButton />
           <button
             onClick={onOpenSearch}
             className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground sm:flex"
